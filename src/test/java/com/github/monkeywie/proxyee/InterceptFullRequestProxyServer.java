@@ -11,12 +11,14 @@ import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.HttpHeaderNames;
 import io.netty.handler.codec.http.HttpRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.nio.charset.Charset;
 
 
 public class InterceptFullRequestProxyServer {
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(InterceptFullRequestProxyServer.class);
     /*
       curl -k -x 127.0.0.1:9999 \
       -X POST \
@@ -55,8 +57,8 @@ public class InterceptFullRequestProxyServer {
                             public void handelRequest(FullHttpRequest httpRequest, HttpProxyInterceptPipeline pipeline) {
                                 ByteBuf content = httpRequest.content();
                                 //打印请求信息
-                                System.out.println(httpRequest.toString());
-                                System.out.println(content.toString(Charset.defaultCharset()));
+                                LOGGER.info(httpRequest.toString());
+                                LOGGER.info(content.toString(Charset.defaultCharset()));
                                 //修改请求体
                                 String body = "{\"name\":\"intercept\",\"pwd\":\"123456\"}";
                                 content.clear();
